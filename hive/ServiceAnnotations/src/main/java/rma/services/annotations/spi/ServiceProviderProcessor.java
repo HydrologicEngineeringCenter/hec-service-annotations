@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,10 +20,10 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.WeakHashMap;
+
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Completion;
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -40,6 +41,7 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+
 import rma.services.annotations.ServiceProvider;
 import rma.services.annotations.ServiceProviders;
 
@@ -148,6 +150,10 @@ public class ServiceProviderProcessor extends AbstractProcessor {
                 } catch (FileNotFoundException x) {
                     // Good.
                 }
+                catch(IllegalArgumentException ex){
+                	//this is because eclipse is really stupid and throws exceptions when you try to get at source_path.
+                	processingEnv.getMessager().printMessage(Kind.WARNING, "Skipping check to determine if META-INF service definition already exists for: "+rsrc+" because Eclipse is really stupid.");
+                }
                 try {
                     FileObject in = processingEnv.getFiler().getResource(StandardLocation.CLASS_OUTPUT, "", rsrc);
                     InputStream is = in.openInputStream();
@@ -156,11 +162,18 @@ public class ServiceProviderProcessor extends AbstractProcessor {
                     } finally {
                         is.close();
                     }
-                } catch (FileNotFoundException x) {
+                } catch (IOException x) {
                     // OK, created for the first time
                 }
+                
             } catch (IOException x) {
-                processingEnv.getMessager().printMessage(Kind.ERROR, x.toString());
+            	StringWriter sw = new StringWriter();
+            	PrintWriter pw = new PrintWriter(sw);
+            	x.printStackTrace(pw);
+            	pw.flush();
+            	sw.flush();
+                processingEnv.getMessager().printMessage(Kind.ERROR, "Register: "+x.toString() + sw.toString());
+                try{sw.close();}catch(IOException e) {}
                 return;
             }
             outputFiles.put(rsrc, lines);

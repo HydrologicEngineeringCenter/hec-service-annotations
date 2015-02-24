@@ -18,7 +18,7 @@ rma.services.annotations.
     <distributionManagement>
         <repository>
             <id>rmanet-releases</id>
-            <url>http://10.10.10.130:8081/nexus/content/repositories/releases/</url>
+            <url>http://repository.rmanet.com:8081/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
   

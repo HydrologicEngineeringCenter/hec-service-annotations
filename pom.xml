@@ -16,13 +16,6 @@
 		rma.services.annotations.
 	</description>
 
-	<distributionManagement>
-		<repository>
-			<id>rmanet-releases</id>
-			<url>http://repository.rmanet.com:8081/nexus/content/repositories/releases/</url>
-		</repository>
-	</distributionManagement>
-
 	<developers>
 		<developer>
 			<name>Shannon J. Newbold</name>

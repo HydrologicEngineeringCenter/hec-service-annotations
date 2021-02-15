@@ -2,7 +2,7 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>rma.services.annotations</groupId>
+	<groupId>mil.army.usace.hec</groupId>
 	<artifactId>service-annotations</artifactId>
 	<version>1.2</version>
 	<packaging>jar</packaging>
@@ -28,6 +28,17 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<url>https://www.hec.usace.army.mil/nexus/repository/maven-snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>maven-releases</id>
+			<url>https://www.hec.usace.army.mil/nexus/repository/maven-releases</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>

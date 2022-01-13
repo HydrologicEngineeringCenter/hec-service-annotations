@@ -31,11 +31,11 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>maven-snapshots</id>
+			<id>hec-nexus-snapshots</id>
 			<url>https://www.hec.usace.army.mil/nexus/repository/maven-snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>maven-releases</id>
+			<id>hec-nexus-releases</id>
 			<url>https://www.hec.usace.army.mil/nexus/repository/maven-releases</url>
 		</repository>
 	</distributionManagement>

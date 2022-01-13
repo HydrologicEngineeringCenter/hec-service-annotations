@@ -112,6 +112,7 @@ public class ServiceProviderProcessor extends AbstractProcessor
 			verify = verifyServiceProviderSignature(clazz, annotation);
 			_verifiedClasses.put(clazz, verify);
 		}
+
 		if(!verify)
 		{
 			return;
@@ -151,24 +152,16 @@ public class ServiceProviderProcessor extends AbstractProcessor
 							"Cannot generate " + rsrc + " because it already exists in sources: " + in.toUri());
 					return;
 				}
-				catch(NullPointerException ex)
-				{
-					// trying to prevent java.lang.NullPointerException
-					// at com.sun.tools.javac.util.DefaultFileManager.getFileForOutput(DefaultFileManager.java:1078)
-					// at com.sun.tools.javac.util.DefaultFileManager.getFileForOutput(DefaultFileManager.java:1054)
-					// at com.sun.tools.javac.processing.JavacFiler.getResource(JavacFiler.java:434)
-					// at org.netbeans.modules.openide.util.AbstractServiceProviderProcessor.register(AbstractServiceProviderProcessor.java:163)
-					// at org.netbeans.modules.openide.util.ServiceProviderProcessor.register(ServiceProviderProcessor.java:99)
-				}
 				catch(FileNotFoundException x)
 				{
 					// Good.
 				}
-				catch(IllegalArgumentException ex)
+				catch(RuntimeException ex)
 				{
 					//this is because eclipse is really stupid and throws exceptions when you try to get at source_path.
+					//seems like we are seeing the same issue with gradle + java 8
 					processingEnv.getMessager().printMessage(Kind.WARNING,
-							"Skipping check to determine if META-INF service definition already exists for: " + rsrc + " because Eclipse is really stupid.");
+							"Skipping check to determine if META-INF service definition already exists for: " + rsrc);
 				}
 				try
 				{

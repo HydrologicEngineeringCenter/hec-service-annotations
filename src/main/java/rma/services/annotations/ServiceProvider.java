@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
  *
  * @author Shannon Newbold (sjnewbold@rmanet.com)
  */
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ServiceProvider
 {

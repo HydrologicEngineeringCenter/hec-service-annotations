@@ -61,7 +61,7 @@ import rma.services.annotations.ServiceProviders;
  * @author Shannon Newbold (sjnewbold@rmanet.com)
  */
 @SupportedAnnotationTypes(value = {"rma.services.annotations.ServiceProvider", "rma.services.annotations.ServiceProviders"})
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ServiceProviderProcessor extends AbstractProcessor
 {
 

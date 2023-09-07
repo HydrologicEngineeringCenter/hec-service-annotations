@@ -1,0 +1,18 @@
+plugins {
+    id 'maven-publish'
+}
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username = project.hasProperty('nexusUser') ? "$nexusUser" : "defaultUser"
+                password = project.hasProperty('nexusPassword') ? "$nexusPassword" : "defaultPassword"
+            }
+            def baseUrl = "https://www.hec.usace.army.mil/nexus/repository"
+            afterEvaluate {
+                url = version.toString().endsWith("SNAPSHOT") ? "$baseUrl/maven-snapshots/" : "$baseUrl/maven-releases/"
+            }
+        }
+    }
+}

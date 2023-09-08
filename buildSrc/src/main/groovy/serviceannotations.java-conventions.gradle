@@ -1,0 +1,24 @@
+plugins {
+    id "java-library"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task sourcesJar (type:Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = "sources"
+}
+
+task javadocJar (type:Jar) {
+    from javadoc
+    archiveClassifier = "javadoc"
+}
+

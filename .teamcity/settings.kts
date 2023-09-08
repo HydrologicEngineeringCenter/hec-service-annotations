@@ -1,6 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.commitStatusPublisher
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetricChange
@@ -8,6 +8,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.finishBuildTrigger
 import java.io.BufferedReader;
 import java.io.File;
+import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
  
 /*
 The settings script is an entry point for defining a TeamCity
@@ -32,7 +33,20 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 */
  
 version = "2021.1"
- 
+
+object GlobalContextProviderRepo : GitVcsRoot( {
+    name = "GlobalContextProviderRepo"
+    url = "https://bitbucket.hecdev.net/scm/sc/service-annotations.git"
+    branch = "refs/heads/main"
+    branchSpec = """+:*
+-:refs/pull-requests/*
+    """.trim() // prevent PR/from builds until reporting to bitbucket works correctly.
+    useTagsAsBranches = true
+    authMethod = password {
+        userName = "builduser"
+        password = "credentialsJSON:tcStashPassword"
+    }
+})
 
 project {
  
@@ -46,7 +60,7 @@ project {
         
         
     }.buildTypes().forEach { buildType(it) }
-     
+    vcsRoot(GlobalContextProviderRepo)
 }
  
  
@@ -67,33 +81,17 @@ object Build : BuildType({
     }
  
     steps {
-        maven {
-            name = "Compile"
-            goals = "compile -U"
-            userSettingsSelection = "sc_settings.xml"
-            pomLocation = "pom.xml"
-            mavenVersion = bundled_3_6()
+        gradle {
+            // Just to be safe, clean first.
+            tasks = "clean"
+            gradleParams = "-PnexusUser=%env.NEXUS_USER% -PnexusPassword=%env.NEXUS_PASSWORD%"
+            jdkHome = "%env.JDK_11_x64%"
         }
-        maven {
-            name = "Tests"
-            goals = "verify"            
-            userSettingsSelection = "sc_settings.xml"
-            pomLocation = "pom.xml"
-            mavenVersion = bundled_3_6()
-        }
-        script {
-            name = "read in coverage"
-            scriptContent = """
-                echo "##teamcity[jacocoReport dataPath='./target/jacoco.exec']"
-            """.trimIndent()
-        }
-        maven {
-            name = "Analysis"
-            goals = "sonar:sonar"
-            userSettingsSelection = "sc_settings.xml"
-            pomLocation = "pom.xml"
-            runnerArgs = "-Dsonar.login=%system.SONAR_TOKEN% -Dsonar.host.url=%system.SONAR_URL%"
-            mavenVersion = bundled_3_6()
+        gradle {
+            tasks = "build"
+            name = "build"
+            gradleParams = "-PnexusUser=%env.NEXUS_USER% -PnexusPassword=%env.NEXUS_PASSWORD%"
+            jdkHome = "%env.JDK_11_x64%"
         }
     }
  
@@ -135,13 +133,24 @@ object Deploy : BuildType({
     }
  
     steps {
-        maven {
-            name = "Publish"            
-            goals = "deploy"
-            pomLocation = "pom.xml"
-            mavenVersion = bundled_3_6()
-            userSettingsSelection = "sc_settings.xml"
-        }        
+        gradle {
+            // Just to be safe, clean first.
+            tasks = "clean"
+            gradleParams = "-PnexusUser=%env.NEXUS_USER% -PnexusPassword=%env.NEXUS_PASSWORD%"
+            jdkHome = "%env.JDK_11_x64%"
+        }
+        gradle {
+            tasks = "build"
+            name = "build for publish"
+            gradleParams = "-PnexusUser=%env.NEXUS_USER% -PnexusPassword=%env.NEXUS_PASSWORD%"
+            jdkHome = "%env.JDK_11_x64%"
+        }
+        gradle {
+            tasks = "publish"
+            name = "Deploy artifacts to Nexus"
+            gradleParams = "-PnexusUser=%env.NEXUS_USER% -PnexusPassword=%env.NEXUS_PASSWORD%"
+            jdkHome = "%env.JDK_11_x64%"
+        }
     }
  
     // for this example deployed releases will always from from master

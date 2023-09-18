@@ -21,6 +21,7 @@ jar {
     manifest {
         attributes('Automatic-Module-Name': 'rma.services.annotations.serviceannotations')
     }
+    from("$buildDir/resources/main")
 }
 
 publishing {

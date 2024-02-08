@@ -32,7 +32,7 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 'Debug' option is available in the context menu for the task.
 */
  
-version = "2021.1"
+version = "2023.05"
 
 object GlobalContextProviderRepo : GitVcsRoot( {
     name = "GlobalContextProviderRepo"
@@ -161,6 +161,7 @@ object Deploy : BuildType({
             successfulOnly = true
             branchFilter = """
                 +:<default>
+                +:refs/tags/*
             """.trimIndent()
  
         }

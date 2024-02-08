@@ -2,23 +2,16 @@ plugins {
     id "java-library"
 }
 
+compileJava {
+    options.release = 11
+}
+
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 test {
     useJUnitPlatform()
-}
-
-task sourcesJar (type:Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier = "sources"
-}
-
-task javadocJar (type:Jar) {
-    from javadoc
-    archiveClassifier = "javadoc"
 }
 

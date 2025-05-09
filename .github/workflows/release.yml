@@ -51,7 +51,7 @@ jobs:
         run: |
           ./gradlew publishAllToNewMavenCentralApi --info \
              -Psign=true \
-             -PautomaticPublish=false \
+             -PautomaticPublish=true \
              -PversionOverride=$VERSION \
              -PsigningKeyPassword="${{ secrets.signingKeyPassword != null && secrets.signingKeyPassword || secrets.SIGNING_KEY_PASSWORD }}" \
              -PcentralApiUsername=${{ secrets.centralApiUsername != null && secrets.centralApiUsername || secrets.MAVEN_CENTRAL_USER }} \

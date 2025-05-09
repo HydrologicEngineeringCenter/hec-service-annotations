@@ -10,7 +10,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package rma.services.annotations;
+package mil.army.usace.hec.services.annotations;
 
 
 import java.lang.annotation.ElementType;

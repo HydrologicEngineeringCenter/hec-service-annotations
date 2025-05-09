@@ -1,0 +1,21 @@
+plugins {
+    id "serviceannotations.java-conventions"
+    id "serviceannotations.deps-conventions"
+    id "serviceannotations.publishing-conventions"
+}
+
+
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'mil.army.usace.hec.services.annotations.serviceannotations')
+    }
+    from("$buildDir/resources/main")
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}

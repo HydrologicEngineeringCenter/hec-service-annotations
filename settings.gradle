@@ -1,1 +1,4 @@
-rootProject.name = "service-annotations"
+rootProject.name = "hec-service-annotations"
+
+include("service-annotations")
+include("service-annotation-processor")

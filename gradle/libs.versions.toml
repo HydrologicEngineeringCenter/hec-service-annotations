@@ -1,0 +1,5 @@
+[versions]
+auto-service = "1.1.1"
+
+[libraries]
+com-google-auto-service = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }

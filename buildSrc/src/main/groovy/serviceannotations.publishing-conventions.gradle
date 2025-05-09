@@ -1,17 +1,75 @@
 plugins {
+    id 'java'
     id 'maven-publish'
+    id 'signing'
+    id "com.palantir.git-version"
 }
+
+def static versionLabel(gitInfo) {
+    def branch = gitInfo.branchName // all branches are snapshots, only tags get released
+    def tag = gitInfo.lastTag
+    // tag is returned as is. Branch may need cleanup
+    return branch == null ? tag : 99 + "." + branch.replace("/", "-") + "-SNAPSHOT"
+}
+
+def tmp_version = project.findProperty("versionOverride") ?: versionLabel(versionDetails())
+
+group = 'mil.army.usace.hec'
+version = tmp_version
+
+ext.shouldSign = (project.findProperty("sign") ?: "false") == "true"
+
+if (shouldSign) {
+    signing {
+        def signingKey = project.getProperty("signingKey").trim().replace("\n","")
+        def signingPassword = project.getProperty("signingKeyPassword")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+
+        sign publishing.publications
+    }
+
+    
+}
+
+publishing.publications.withType(MavenPublication) {
+    pom {
+        url = 'https://github.com/HydrologicEngineeringCenter/hec-service-annotations'
+
+        scm {
+            connection = 'scm:git:https://github.com/HydrologicEngineeringCenter/hec-service-annotations.git'
+            developerConnection = 'git@github.com:HydrologicEngineeringCenter/hec-service-annotations.git'
+            url = 'https://github.com/HydrologicEngineeringCenter/hec-service-annotations'
+        }
+
+        licenses {
+            license {
+                name = 'GPLv2'
+                url = 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+            }
+        }
+
+        developers {
+            developer {
+                id = 'hec'
+                name = 'Hydrologic Engineering Center'
+                email = 'https://github.com/HydrlogicEngineeringCenter'
+            }
+        }
+    }
+}
+
 
 publishing {
     repositories {
+        mavenLocal()
         maven {
+            name = "mavenCentralApi"
+            url = "https://central.sonatype.com"
+            def user = project.findProperty("centralApiUsername")
+            def passwd = project.findProperty("centralApiPassword")
             credentials {
-                username = project.hasProperty('nexusUser') ? "$nexusUser" : "defaultUser"
-                password = project.hasProperty('nexusPassword') ? "$nexusPassword" : "defaultPassword"
-            }
-            def baseUrl = "https://www.hec.usace.army.mil/nexus/repository"
-            afterEvaluate {
-                url = version.toString().endsWith("SNAPSHOT") ? "$baseUrl/maven-snapshots/" : "$baseUrl/maven-releases/"
+                username = user
+                password = passwd
             }
         }
     }

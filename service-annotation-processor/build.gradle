@@ -1,0 +1,24 @@
+plugins {
+    id "serviceannotations.java-conventions"
+    id "serviceannotations.deps-conventions"
+    id "serviceannotations.publishing-conventions"
+}
+
+
+dependencies {
+    annotationProcessor(libs.com.google.auto.service)
+    implementation(project(":service-annotations"))
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'service-annotation-processor'
+            from components.java
+            pom {
+                name = 'Service Annotation Processor'
+                description = 'Processor of the Service Annotation Classes'
+            }
+        }
+    }
+}

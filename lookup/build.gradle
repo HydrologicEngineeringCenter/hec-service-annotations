@@ -7,14 +7,18 @@ plugins {
 
 jar {
     manifest {
-        attributes('Automatic-Module-Name': 'mil.army.usace.hec.sutil.lookup')
+        attributes('Automatic-Module-Name': 'mil.army.usace.hec.util.lookup')
     }
-    from("$buildDir/resources/main")
 }
 
 dependencies {
-    implementation(project(":service-annotations"))
+    testAnnotationProcessor(project(":service-annotation-processor"))
+    testImplementation implementation(project(":service-annotations"))
+
+    testImplementation enforcedPlatform(libs.junit.bom)
+    testImplementation(libs.bundles.junit)
 }
+
 
 publishing {
     publications {

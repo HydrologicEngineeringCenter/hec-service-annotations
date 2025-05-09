@@ -40,6 +40,8 @@
  */
 package mil.army.usace.hec.services.annotations.spi;
 
+import com.google.auto.service.AutoService;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,6 +94,7 @@ import mil.army.usace.hec.services.annotations.ServiceProviders;
  *
  * @author Shannon Newbold (sjnewbold@rmanet.com)
  */
+@AutoService(javax.annotation.processing.Processor.class)
 @SupportedAnnotationTypes(value = {"mil.army.usace.hec.services.annotations.ServiceProvider", "mil.army.usace.hec.services.annotations.ServiceProviders"})
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 public class ServiceProviderProcessor extends AbstractProcessor

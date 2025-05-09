@@ -41,7 +41,7 @@ gradle.properties
 
 # Build files
 */build/*
-
+**/build
 # Eclipse files
 .project
 /.project

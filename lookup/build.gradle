@@ -7,19 +7,23 @@ plugins {
 
 jar {
     manifest {
-        attributes('Automatic-Module-Name': 'mil.army.usace.hec.services.annotations.serviceannotations')
+        attributes('Automatic-Module-Name': 'mil.army.usace.hec.sutil.lookup')
     }
     from("$buildDir/resources/main")
+}
+
+dependencies {
+    implementation(project(":service-annotations"))
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = 'service-annotations'
+            artifactId = 'lookup'
             from components.java
             pom {
-                name = 'Service Annotations'
-                description = 'Contains the annotation interfaces to apply to appropriate classes'
+                name = 'Service Lookup Utility'
+                description = 'Allows users to find services defined by the Service-Annotations'
             }
         }
     }

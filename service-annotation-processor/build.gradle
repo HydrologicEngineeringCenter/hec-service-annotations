@@ -6,7 +6,8 @@ plugins {
 
 
 dependencies {
-    annotationProcessor(libs.com.google.auto.service)
+    compileOnly(libs.com.google.auto.service.annotations)
+    annotationProcessor(libs.com.google.auto.service.processor)
     implementation(project(":service-annotations"))
 }
 

@@ -50,6 +50,7 @@ jobs:
       - name: Push to central
         run: |
           ./gradlew publishAllToNewMavenCentralApi --info \
+             -Psign=true \
              -PautomaticPublish=false \
              -PversionOverride=$VERSION \
              -PsigningKeyPassword="${{ secrets.signingKeyPassword != null && secrets.signingKeyPassword || secrets.SIGNING_KEY_PASSWORD }}" \

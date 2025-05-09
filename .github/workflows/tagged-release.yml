@@ -14,7 +14,7 @@ jobs:
       token: ${{ secrets.GITHUB_TOKEN }}
       signingKey: ${{ secrets.SIGNING_KEY }}
       signingKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-      centralApiUsername: ${{ secrets.CENTRAL_API_USER }}
-      centralApiPassword: ${{ secrets.CENTRAL_API_PASSWORD }}
+      centralApiUsername: ${{ secrets.MAVEN_CENTRAL_USER }}
+      centralApiPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
     with:
       branch: ${{github.ref_name}}

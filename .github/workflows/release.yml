@@ -53,6 +53,6 @@ jobs:
              -PautomaticPublish=false \
              -PversionOverride=$VERSION \
              -PsigningKeyPassword="${{ secrets.signingKeyPassword != null && secrets.signingKeyPassword || secrets.SIGNING_KEY_PASSWORD }}" \
-             -PcentralApiUsername=${{ secrets.centralApiUsername != null && secrets.centralApiUsername || secrets.CENTRAL_API_USER }} \
-             -PcentralApiPassword=${{ secrets.centralApiPassword != null && secrets.centralApiPassword || secrets.CENTRAL_API_PASSWORD }} \
+             -PcentralApiUsername=${{ secrets.centralApiUsername != null && secrets.centralApiUsername || secrets.MAVEN_CENTRAL_USER }} \
+             -PcentralApiPassword=${{ secrets.centralApiPassword != null && secrets.centralApiPassword || secrets.MAVEN_CENTRAL_PASSWORD }} \
              -PsigningKey="${{ secrets.signingKey != null && secrets.signingKey || secrets.SIGNING_KEY }}"

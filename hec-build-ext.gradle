@@ -2,5 +2,6 @@ includeBuild("$gradle.ext.externalLibDir") {
     dependencySubstitution {
         substitute(module("mil.army.usace.hec:service-annotations")).using(project(":service-annotations"))
         substitute(module("mil.army.usace.hec:service-annotation-processor")).using(project(":service-annotation-processor"))
+        substitute(module("mil.army.usace.hec:lookup-compat")).using(project(":lookup-compat"))
     }
 }

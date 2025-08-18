@@ -7,11 +7,13 @@ plugins {
 
 jar {
     manifest {
-        attributes('Automatic-Module-Name': 'mil.army.usace.hec.util.lookup')
+        attributes('Automatic-Module-Name': 'rma.util.lookup')
     }
 }
 
 dependencies {
+    api(libs.nb.lookup)
+
     testAnnotationProcessor(project(":service-annotation-processor"))
     testImplementation implementation(project(":service-annotations"))
 
@@ -23,11 +25,13 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = 'lookup'
+            artifactId = 'lookup-compat'
             from components.java
             pom {
-                name = 'Service Lookup Utility'
-                description = 'Allows users to find services defined by the Service-Annotations'
+                name = 'Service Lookup Utility Compat Layer'
+                description = 'Allows users to find services defined by the Service-Annotations. ' +
+                        'Compatibility layer to bridge older code still using the legacy lookup package space to the ' +
+                        'upstream NetBeans Lookup library.'
             }
         }
     }

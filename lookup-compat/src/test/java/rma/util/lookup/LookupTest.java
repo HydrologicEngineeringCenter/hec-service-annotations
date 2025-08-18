@@ -1,20 +1,15 @@
-package hec.testing;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.junit.jupiter.api.Test;
+package rma.util.lookup;
 
 import hec.services.MultipleServiceImpl;
-import hec.services.OtherTestServiceProvider;
-import hec.services.OtherTestServiceProviderImplHello;
 import hec.services.TestServiceProvider;
 import hec.services.TestServiceProviderImplForOne;
-import mil.army.usace.hec.util.lookup.Lookup;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class TestLookup {
+class LookupTest {
 
     @Test
     void test_simple_lookup() {
@@ -44,5 +39,5 @@ public class TestLookup {
         assertEquals("world", multi.getValue(), "Incorrect value from multi-provider");
         assertEquals(2, multi.getTestValue(), "Incorrect testValue from multi-provider");
     }
-    
+
 }

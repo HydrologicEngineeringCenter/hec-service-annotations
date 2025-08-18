@@ -1,10 +1,12 @@
 [versions]
 auto-service = "1.1.1"
+nb-lookup = "RELEASE260"
 junit = "5.11.3"
 
 [libraries]
 com-google-auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
 com-google-auto-service-processor = { module = "com.google.auto.service:auto-service", version.ref = "auto-service" }
+nb-lookup = { module = "org.netbeans.api:org-openide-util-lookup", version.ref = "nb-lookup"}
 # test deps
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
